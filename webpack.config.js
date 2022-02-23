@@ -5,33 +5,33 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
-const { extendDefaultPlugins } = require("svgo"); //loseless img optimization
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+const { extendDefaultPlugins } = require('svgo'); //loseless img optimization
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
-const filename = ext => isDev ? `[name].${ext}` : `[contenthash].${ext}`;
+const filename = ext => (isDev ? `[name].${ext}` : `[contenthash].${ext}`);
 
 const optimize = () => {
   const configObj = {
     splitChunks: {
-      chunks: 'all'
-    }
+      chunks: 'all',
+    },
   };
 
-  if(isProd) {
-    configObj.minimize = true,
-    configObj.minimizer = [
-      new OptimizeCssAssetsWebpackPlugin(),
-      new TerserWebpackPlugin({
-        parallel: true,
-      })
-    ]
+  if (isProd) {
+    (configObj.minimize = true),
+      (configObj.minimizer = [
+        new OptimizeCssAssetsWebpackPlugin(),
+        new TerserWebpackPlugin({
+          parallel: true,
+        }),
+      ]);
   }
 
   return configObj;
-}
+};
 
 const plugins = () => {
   const basePlugins = [
@@ -39,12 +39,12 @@ const plugins = () => {
       template: './index.html',
       filename: 'index.html',
       minify: {
-        collapseWhitespace: isProd
-      }
+        collapseWhitespace: isProd,
+      },
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: `./css/${filename('css')}`
+      filename: `./css/${filename('css')}`,
     }),
     // new CopyWebpackPlugin({
     //   patterns: [
@@ -53,28 +53,28 @@ const plugins = () => {
     // })
   ];
 
-  if(isProd) {
+  if (isProd) {
     basePlugins.push(
       new ImageMinimizerPlugin({
         minimizerOptions: {
           // Lossless optimization with custom option
           plugins: [
-            ["gifsicle", { interlaced: true }],
-            ["jpegtran", { progressive: true }],
-            ["optipng", { optimizationLevel: 5 }],
+            ['gifsicle', { interlaced: true }],
+            ['jpegtran', { progressive: true }],
+            ['optipng', { optimizationLevel: 5 }],
             // Svgo configuration here https://github.com/svg/svgo#configuration
             [
-              "svgo",
+              'svgo',
               {
                 plugins: extendDefaultPlugins([
                   {
-                    name: "removeViewBox",
+                    name: 'removeViewBox',
                     active: false,
                   },
                   {
-                    name: "addAttributesToSVGElement",
+                    name: 'addAttributesToSVGElement',
                     params: {
-                      attributes: [{ xmlns: "http://www.w3.org/2000/svg" }],
+                      attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }],
                     },
                   },
                 ]),
@@ -82,23 +82,23 @@ const plugins = () => {
             ],
           ],
         },
-      }),
+      })
     );
   }
 
   return basePlugins;
-}
+};
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
   mode: 'development',
   entry: {
-    app: './js/index.js'
+    app: './js/index.js',
   },
   output: {
     filename: `./js/${filename('js')}`,
     path: path.resolve(__dirname, 'dist'),
-    assetModuleFilename: 'img/[hash][ext][query]'
+    assetModuleFilename: 'img/[hash][ext][query]',
   },
   devtool: isProd ? false : 'inline-source-map',
   devServer: {
@@ -123,18 +123,18 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        type: "asset",
+        type: 'asset',
       },
       {
-        test:  /\.(woff|woff2)$/i,
+        test: /\.(woff|woff2)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'fonts/[hash][ext][query]'
-        }
+          filename: 'fonts/[hash][ext][query]',
+        },
       },
       {
         test: /\.html$/,
-        loader: 'html-loader'
+        loader: 'html-loader',
       },
       {
         test: /\.css$/i, //for css
@@ -142,28 +142,29 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              hmr: isDev //hot model reloading - updates without page reload
-            }
+              hmr: isDev, //hot model reloading - updates without page reload
+            },
           },
-          'css-loader'
+          'css-loader',
         ],
       },
       {
         test: /\.s[ac]ss$/i, //for sass
-        use: [
-          MiniCssExtractPlugin.loader, 
-          'css-loader',
-          'sass-loader'
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
-      }
+        use: ['babel-loader'],
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: 'ts-loader',
+      },
     ],
   },
-	resolve: {
-		extensions: ['', '.js', '.jsx', '.ts', '.tsx'],
-	}
-}
+  resolve: {
+    extensions: ['', '.js', '.jsx', '.ts', '.tsx'],
+  },
+};

@@ -1,18 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Header } from './components/Header';
-import { Footer } from './components/Footer';
+import App from './App';
 
 import '../styles/main.scss';
 import '../index.html';
 
-const App = () => {
-	return (
-		<div className="app">
-			<Header />
-			<Footer />
-		</div>
-	);
-};
-
-ReactDOM.render(<App />, document.querySelector('#root'));
+ReactDOM.render(<App text="big boss" />, document.querySelector('#root'));
