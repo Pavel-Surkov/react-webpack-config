@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const Header = (props) => {
+export const Header = () => {
 	return <header className="footer">Header</header>;
 };
