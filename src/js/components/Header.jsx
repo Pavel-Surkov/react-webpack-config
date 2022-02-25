@@ -1,7 +1,5 @@
 import React from 'react';
 
-export const Header = () => {
-	return (
-		<header className="footer">Header</header>
-	)
+export const Header = (props) => {
+	return <header className="footer">Header</header>;
 };
