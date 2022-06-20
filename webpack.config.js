@@ -2,9 +2,8 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+// const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
-// const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const { extendDefaultPlugins } = require('svgo'); //loseless img optimization
@@ -52,32 +51,68 @@ const plugins = () => {
 	if (isProd) {
 		basePlugins.push(
 			new ImageMinimizerPlugin({
-				minimizerOptions: {
-					// Lossless optimization with custom option
-					plugins: [
-						['gifsicle', { interlaced: true }],
-						['jpegtran', { progressive: true }],
-						['optipng', { optimizationLevel: 5 }],
-						// Svgo configuration here https://github.com/svg/svgo#configuration
-						[
-							'svgo',
-							{
-								plugins: extendDefaultPlugins([
-									{
-										name: 'removeViewBox',
-										active: false
-									},
-									{
-										name: 'addAttributesToSVGElement',
-										params: {
-											attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }]
+				minimizer: {
+					implementation: ImageMinimizerPlugin.imageminMinify,
+					options: {
+						plugins: [
+							['gifsicle', { interlaced: true }],
+							['jpegtran', { progressive: true }],
+							['optipng', { optimizationLevel: 5 }],
+							// Svgo configuration here https://github.com/svg/svgo#configuration
+							[
+								'svgo',
+								{
+									plugins: {
+										name: 'preset-default',
+										overrides: {
+											cleanupListOfValues: true
 										}
 									}
-								])
-							}
+									// plugins: extendDefaultPlugins([
+									// 	{
+									// 		name: 'removeViewBox',
+									// 		active: false
+									// 	},
+									// 	{
+									// 		name: 'addAttributesToSVGElement',
+									// 		params: {
+									// 			attributes: [
+									// 				{ xmlns: 'http://www.w3.org/2000/svg' }
+									// 			]
+									// 		}
+									// 	}
+									// ])
+								}
+							]
 						]
-					]
+					}
 				}
+				// minimizerOptions: {
+				// 	// Lossless optimization with custom option
+				// 	plugins: [
+				// 		['gifsicle', { interlaced: true }],
+				// 		['jpegtran', { progressive: true }],
+				// 		['optipng', { optimizationLevel: 5 }],
+				// 		// Svgo configuration here https://github.com/svg/svgo#configuration
+				// 		[
+				// 			'svgo',
+				// 			{
+				// 				plugins: extendDefaultPlugins([
+				// 					{
+				// 						name: 'removeViewBox',
+				// 						active: false
+				// 					},
+				// 					{
+				// 						name: 'addAttributesToSVGElement',
+				// 						params: {
+				// 							attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }]
+				// 						}
+				// 					}
+				// 				])
+				// 			}
+				// 		]
+				// 	]
+				// }
 			})
 		);
 	}
@@ -98,8 +133,10 @@ module.exports = {
 	},
 	devtool: isProd ? false : 'inline-source-map',
 	devServer: {
+		static: {
+			directory: path.join(__dirname, './')
+		},
 		historyApiFallback: true,
-		contentBase: path.resolve(__dirname, 'dist'),
 		open: true,
 		compress: true,
 		hot: true, //makes hmr available

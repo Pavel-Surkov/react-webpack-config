@@ -1,8 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './App';
 
 import '../styles/main.scss';
 import '../index.html';
 
-ReactDOM.render(<App text="big boss" />, document.querySelector('#root'));
+const rootElement = document.getElementById('root');
+
+ReactDOM.createRoot(rootElement).render(<App />);
