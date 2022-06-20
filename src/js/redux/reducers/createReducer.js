@@ -13,15 +13,16 @@ const createReducer = (state = initialState, action) => {
 				name: action.payload
 			};
 		}
-		case 'FEED': {
-			const food = action.payload;
-			const newStomach = state.stomach.concat(food);
-
+		case 'CHANGE_WEIGHT': {
 			return {
 				...state,
-				weight: state.weight + 20,
-				height: state.height + 0.5,
-				stomach: newStomach
+				weight: action.payload
+			};
+		}
+		case 'CHANGE_HEIGHT': {
+			return {
+				...state,
+				height: action.payload
 			};
 		}
 		case 'CLEAR': {

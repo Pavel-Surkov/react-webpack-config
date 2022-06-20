@@ -12,6 +12,24 @@ const farmReducer = (state = [], action) => {
 
 			return newFarm;
 		}
+		case 'FEED_HAMSTER': {
+			const food = action.payload.food;
+			const hamster = action.payload.hamster;
+
+			const newStomach = hamster.stomach.concat(food);
+
+			const newFarm = state.concat().filter((hmstr) => hmstr.name !== hamster.name);
+
+			return [
+				...newFarm,
+				{
+					name: hamster.name,
+					weight: hamster.weight + 20,
+					height: hamster.height + 0.5,
+					stomach: newStomach
+				}
+			];
+		}
 		default:
 			return state;
 	}

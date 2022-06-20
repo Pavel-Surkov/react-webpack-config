@@ -1,13 +1,23 @@
-const ADD_HAMSTER = (hamster) => {
+export const ADD_HAMSTER = (hamster) => {
 	return {
 		type: 'ADD_HAMSTER',
 		payload: hamster
 	};
 };
 
-const REMOVE_HAMSTER = (hamsterName) => {
+export const REMOVE_HAMSTER = (hamsterName) => {
 	return {
 		type: 'ADD_HAMSTER',
 		payload: hamsterName
+	};
+};
+
+export const FEED_HAMSTER = (food, hamster) => {
+	return {
+		type: 'FEED_HAMSTER',
+		payload: {
+			food,
+			hamster
+		}
 	};
 };
