@@ -1,10 +1,7 @@
-import createReducer from './createReducer';
-import farmReducer from './farmReducer';
 import { combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
-	create: createReducer,
-	farm: farmReducer
+	// count: countReducer
 });
 
 export default rootReducer;
