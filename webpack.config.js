@@ -6,12 +6,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
-const { extendDefaultPlugins } = require('svgo'); //loseless img optimization
 
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
 const filename = (ext) => (isDev ? `[name].${ext}` : `[contenthash].${ext}`);
+
+const PUBLICPATH = '/dist/';
 
 const optimize = () => {
 	const configObj = {
@@ -70,51 +71,11 @@ const plugins = () => {
 											}
 										}
 									]
-									// plugins: extendDefaultPlugins([
-									// 	{
-									// 		name: 'removeViewBox',
-									// 		active: false
-									// 	},
-									// 	{
-									// 		name: 'addAttributesToSVGElement',
-									// 		params: {
-									// 			attributes: [
-									// 				{ xmlns: 'http://www.w3.org/2000/svg' }
-									// 			]
-									// 		}
-									// 	}
-									// ])
 								}
 							]
 						]
 					}
 				}
-				// minimizerOptions: {
-				// 	// Lossless optimization with custom option
-				// 	plugins: [
-				// 		['gifsicle', { interlaced: true }],
-				// 		['jpegtran', { progressive: true }],
-				// 		['optipng', { optimizationLevel: 5 }],
-				// 		// Svgo configuration here https://github.com/svg/svgo#configuration
-				// 		[
-				// 			'svgo',
-				// 			{
-				// 				plugins: extendDefaultPlugins([
-				// 					{
-				// 						name: 'removeViewBox',
-				// 						active: false
-				// 					},
-				// 					{
-				// 						name: 'addAttributesToSVGElement',
-				// 						params: {
-				// 							attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }]
-				// 						}
-				// 					}
-				// 				])
-				// 			}
-				// 		]
-				// 	]
-				// }
 			})
 		);
 	}
@@ -131,14 +92,27 @@ module.exports = {
 	output: {
 		filename: `./js/${filename('js')}`,
 		path: path.resolve(__dirname, 'dist'),
-		assetModuleFilename: 'img/[hash][ext][query]'
+		publicPath: PUBLICPATH,
+		assetModuleFilename: 'img/[hash][ext][query]',
+		clean: true
 	},
 	devtool: isProd ? false : 'inline-source-map',
 	devServer: {
 		static: {
 			directory: path.join(__dirname, './')
 		},
-		historyApiFallback: true,
+		// historyApiFallback: true,
+		historyApiFallback: {
+			index: '/dist/'
+		},
+		proxy: {
+			'/': {
+				bypass: function (req, res, proxyOptions) {
+					console.log('Skipping proxy for browser request.');
+					return `${PUBLICPATH}/index.html`;
+				}
+			}
+		},
 		open: true,
 		compress: true,
 		hot: true, //makes hmr available
