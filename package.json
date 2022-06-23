@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
+	"homepage": ".",
 	"dependencies": {
 		"autoprefixer": "^10.4.7",
 		"browser-sync": "^2.27.10"
