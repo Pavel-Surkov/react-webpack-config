@@ -1,5 +1,5 @@
 import React from "react";
-import { connect } from "frontity";
+import { connect, styled } from "frontity";
 
 const Home = () => {
   return <div>Home</div>;

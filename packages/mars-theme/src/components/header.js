@@ -1,5 +1,5 @@
 import { connect, styled } from "frontity";
-import Logo from "./constant/Logo";
+// import Logo from "./constant/Logo";
 import MobileMenu from "./Menu";
 import Container from "./constant/Container";
 
@@ -7,7 +7,7 @@ const Header = ({ state }) => {
   return (
     <>
       <HeaderContainer>
-        <Logo />
+        {/* <Logo /> */}
         <MobileMenu />
       </HeaderContainer>
     </>
