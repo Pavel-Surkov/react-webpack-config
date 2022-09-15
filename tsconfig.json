@@ -1,13 +1,19 @@
 {
 	"compilerOptions": {
+		"target": "es2020",
 		"outDir": "./dist/",
+		"module": "commonjs",
+		"checkJs": true,
+		"strict": true,
 		"watch": true,
 		"sourceMap": true,
-		"target": "es6",
+		"noImplicitAny": false,
 		"jsx": "react",
+		"baseUrl": "./",
 		"moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true
 	},
-	"include": ["./src/**/*"]
+	"include": ["./src/**/*", ".eslintrc"]
 }
