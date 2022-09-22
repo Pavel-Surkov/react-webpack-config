@@ -1,5 +1,7 @@
 import React from 'react';
 
-export const Header: React.FC = () => {
+const Header: React.FC = () => {
 	return <header className="footer">Header</header>;
 };
+
+export default Header;
