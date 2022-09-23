@@ -1,6 +1,6 @@
 import React from 'react';
-import { addTodo } from '../redux/todoSlice';
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { addTodo } from '../store/reducers/todoSlice';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
 
 const Home: React.FC = () => {
 	const todos = useAppSelector((state) => state.todos);
@@ -14,6 +14,9 @@ const Home: React.FC = () => {
 					<li key={todo.id}>{todo.title}</li>
 				))}
 			</ul>
+			{/* User */}
+
+			{/* User */}
 		</div>
 	);
 };

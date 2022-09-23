@@ -1,5 +1,5 @@
 import React from 'react';
-import store from './redux/store';
+import store from './store/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
